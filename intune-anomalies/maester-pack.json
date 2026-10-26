@@ -4,7 +4,7 @@
   "Guid": "ad77ba14-7eb7-4eee-9a28-cc26b4f21347",
   "Name": "RKSolutions Intune Anomalies",
   "Description": "Finds what needs attention in Microsoft Intune before it becomes a problem: devices that miss protection, drift out of compliance or fall out of management, and policies that still rely on outdated settings.",
-  "Version": "0.1.3",
+  "Version": "0.1.4",
   "Publisher": "royklo",
   "License": "MIT",
   "Homepage": "https://github.com/royklo/maester-pack-rksolutions/tree/main/intune-anomalies",
