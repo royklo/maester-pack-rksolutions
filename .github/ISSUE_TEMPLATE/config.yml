@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Problem with Maester itself
+    url: https://github.com/maester365/maester/issues
+    about: Report problems with Maester, Install-MtPack or the report there, not here.
+  - name: Maester Packs documentation
+    url: https://maester.dev/docs/packs
+    about: How to install, update and run packs.
