@@ -1,5 +1,9 @@
 # Changelog
 
+## intune-anomalies 0.1.1
+
+- A banner for the pack index.
+
 ## intune-anomalies 0.1.0
 
 First version. Eight read-only checks of Windows devices managed by Intune:
