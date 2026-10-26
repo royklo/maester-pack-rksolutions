@@ -1,5 +1,10 @@
 # Changelog
 
+## intune-anomalies 0.1.4
+
+- Problems with the checks are reported in this repository too (the Issues link on the pack index pointed to
+  RKSolutions-Module).
+
 ## intune-anomalies 0.1.3
 
 - MP.RKS.IA.1008 shows the configured value by its Intune name, such as `False` instead of

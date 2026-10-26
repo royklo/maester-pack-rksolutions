@@ -38,7 +38,8 @@ function global:Get-MgContext { [pscustomobject]@{ TenantId = 't1'; Environment 
 function global:Get-MgEnvironment { param($Name) [pscustomobject]@{ Name = 'Global'; GraphEndpoint = 'https://graph.microsoft.com' } }
 function global:Invoke-MgGraphRequest {
     param($Method, $Uri, $Headers, $OutputType, $Body)
-    $u = [uri]$Uri
+    # Maester 3.0.0-rc07 and later pass a relative uri (v1.0/users) and let the SDK add the endpoint; older ones an absolute one.
+    $u = [uri]::new([uri]'https://graph.microsoft.com/', [string]$Uri)
     $key = ($u.AbsolutePath.TrimStart('/'))
     $global:SimCalls.Add("$Method $($u.AbsoluteUri)")
     $fail = {
