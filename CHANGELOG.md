@@ -1,5 +1,9 @@
 # Changelog
 
+## intune-anomalies 0.1.2
+
+- A broader description and page summary, ready for checks beyond Windows devices.
+
 ## intune-anomalies 0.1.1
 
 - A banner for the pack index.
