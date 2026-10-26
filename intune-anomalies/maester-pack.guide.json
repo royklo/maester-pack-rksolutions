@@ -1,6 +1,6 @@
 {
   "$schema": "https://maester.dev/schemas/maester-pack-guide-1.0.json",
-  "Summary": "Eight checks of the Windows devices that Intune manages, from the RKSolutions Intune Anomalies report.",
+  "Summary": "Checks your Microsoft Intune tenant for anomalies in device protection, compliance, enrollment and policy settings. The checks grow with each release.",
   "Prerequisites": [
     { "Text": "PowerShell 7.4 or later and Maester 3.0 or later." },
     { "Text": "An account that can read Intune and, for the BitLocker and LAPS checks, read BitLocker keys and LAPS password metadata (the Global Reader role is enough; so is Intune Administrator)." }
