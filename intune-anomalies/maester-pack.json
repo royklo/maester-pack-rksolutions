@@ -4,7 +4,7 @@
   "Guid": "ad77ba14-7eb7-4eee-9a28-cc26b4f21347",
   "Name": "RKSolutions Intune Anomalies",
   "Description": "Finds Windows devices in Intune that need attention: BitLocker keys not in Entra ID, missing LAPS backups, noncompliant, inactive or unregistered devices, shared single-user devices and deprecated settings.",
-  "Version": "0.1.0",
+  "Version": "0.1.1",
   "Publisher": "royklo",
   "License": "MIT",
   "Homepage": "https://github.com/royklo/maester-pack-rksolutions/tree/main/intune-anomalies",
@@ -14,6 +14,7 @@
   "Suites": ["tests"],
   "Helpers": ["helpers"],
   "Guide": "maester-pack.guide.json",
+  "Banner": "assets/banner.png",
   "Uses": {
     "Services": ["Graph"],
     "GraphScopes": [
