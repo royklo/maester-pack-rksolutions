@@ -1,4 +1,4 @@
-# Synced from royklo/RKSolutions-Module@bc0fa11 module/Core/IntuneAnomalyResolvers.ps1. Do not edit here.
+# Synced from royklo/RKSolutions-Module@ec3c365 module/Core/IntuneAnomalyResolvers.ps1. Do not edit here.
 function ConvertTo-ComplianceSettingFriendlyName {
     param([string] $SettingName)
     if ($SettingName -match '^(Windows10CompliancePolicy|DefaultDeviceCompliancePolicy)\.(.+)$' -and $script:ComplianceSettingFriendlyNames.ContainsKey($Matches[2])) {
@@ -455,6 +455,25 @@ function Get-IntuneSettingValueString {
     }
 }
 
+function Get-IntuneSettingValueLabel {
+    <#
+        Turns a choice value such as com.apple.applicationaccess_allowgenmoji_false into its label from the
+        expanded setting definition ("False"), or into the part after the definition id ("false") when the
+        definition has no label for it. Other values come back as they are. Collection values are mapped one by one.
+    #>
+    [CmdletBinding()]
+    [OutputType([string])]
+    param([string] $DefinitionId, [string] $Value, [hashtable] $Catalog)
+
+    $options = if ($Catalog -and $DefinitionId -and $Catalog.ContainsKey($DefinitionId)) { $Catalog[$DefinitionId].Options }
+    $labels = foreach ($v in ($Value -split '; ')) {
+        if ($options -and $options[$v]) { $options[$v] }
+        elseif ($DefinitionId -and $v.StartsWith("${DefinitionId}_")) { $v.Substring($DefinitionId.Length + 1) }
+        else { $v }
+    }
+    return (@($labels) -join '; ')
+}
+
 function Get-IntuneSettingDeprecations {
     <#
         Recursively walk a settingInstance (and any nested group children) and
@@ -477,7 +496,8 @@ function Get-IntuneSettingDeprecations {
         $hits.Add([PSCustomObject]@{
             DefinitionId = $defId
             DisplayName  = if ([string]::IsNullOrWhiteSpace($check.DisplayName)) { $defId } else { $check.DisplayName }
-            Value        = $value
+            # Only choice values are option ids; a simple value is what the admin typed and stays as it is.
+            Value        = if ([string]$SettingInstance.'@odata.type' -like '*choiceSetting*') { Get-IntuneSettingValueLabel -DefinitionId $defId -Value $value -Catalog $Catalog } else { $value }
             Source       = $check.Source
         })
     }
@@ -514,7 +534,13 @@ function Resolve-IntuneDeprecatedAnomalies {
     $catalog = @{}
     foreach ($policy in $Context.ConfigurationPolicies) {
         foreach ($s in @($policy.settings)) {
-            foreach ($def in @($s.settingDefinitions)) { if ($def.id -and -not $catalog.ContainsKey([string]$def.id)) { $catalog[[string]$def.id] = [pscustomobject]@{ DisplayName = [string]$def.displayName } } }
+            foreach ($def in @($s.settingDefinitions)) {
+                if (-not $def.id -or $catalog.ContainsKey([string]$def.id)) { continue }
+                # Choice definitions carry their options: itemId (the configured value) -> displayName (its label).
+                $options = @{}
+                foreach ($o in @($def.options)) { if ($o.itemId) { $options[[string]$o.itemId] = [string]$o.displayName } }
+                $catalog[[string]$def.id] = [pscustomobject]@{ DisplayName = [string]$def.displayName; Options = $options }
+            }
         }
     }
     $out = [System.Collections.Generic.List[PSObject]]::new()

@@ -1,4 +1,4 @@
-# Synced from royklo/RKSolutions-Module@bc0fa11 module/Core/Initialize-RKIntuneCoreState.ps1. Do not edit here.
+# Synced from royklo/RKSolutions-Module@ec3c365 module/Core/Initialize-RKIntuneCoreState.ps1. Do not edit here.
 function Initialize-RKIntuneCoreState {
     <#
     .SYNOPSIS

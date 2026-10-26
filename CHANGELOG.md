@@ -1,5 +1,11 @@
 # Changelog
 
+## intune-anomalies 0.1.3
+
+- MP.RKS.IA.1008 shows the configured value by its Intune name, such as `False` instead of
+  `com.apple.applicationaccess_allowgenmoji_false`. Typed values stay as they are. Core synced from
+  RKSolutions-Module@ec3c365.
+
 ## intune-anomalies 0.1.2
 
 - A broader description and page summary, ready for checks beyond Windows devices.
