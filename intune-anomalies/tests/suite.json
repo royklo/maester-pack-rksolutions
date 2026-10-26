@@ -1,0 +1,7 @@
+{
+  "Id": "RKS.IA",
+  "Name": "RKSolutions Intune Anomalies",
+  "Source": "Custom",
+  "Tags": ["RKSolutions"],
+  "RequiresMaester": "3.0"
+}

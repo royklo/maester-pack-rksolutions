@@ -1,0 +1,37 @@
+{
+  "$schema": "https://maester.dev/schemas/maester-pack-guide-1.0.json",
+  "Summary": "Eight checks of the Windows devices that Intune manages, from the RKSolutions Intune Anomalies report.",
+  "Prerequisites": [
+    { "Text": "PowerShell 7.4 or later and Maester 3.0 or later." },
+    { "Text": "An account that can read Intune and, for the BitLocker and LAPS checks, read BitLocker keys and LAPS password metadata (the Global Reader role is enough; so is Intune Administrator)." }
+  ],
+  "Connect": {
+    "Steps": [
+      { "Text": "Connect to Microsoft Graph with Maester's scopes plus the two this pack also needs. Maester's own scope check then passes, so no extra switch is needed.", "Command": "Connect-MgGraph -Scopes ((Get-MtGraphScope) + 'BitlockerKey.ReadBasic.All', 'DeviceLocalCredential.ReadBasic.All') -NoWelcome" }
+    ],
+    "Notes": [
+      "If access is denied (a missing scope or a missing role), the BitLocker and LAPS checks are skipped with the reason, and the other checks run."
+    ]
+  },
+  "Run": {
+    "Commands": [
+      { "Text": "Only this pack", "Command": "Invoke-Maester -Pack RKS.IA -SkipBuiltIn" },
+      { "Text": "Maester's tests and this pack", "Command": "Invoke-Maester -Pack RKS.IA" }
+    ],
+    "Options": [
+      { "Name": "MP.RKS.IA.1001 IncludeExcludedDevices", "Default": "false", "Text": "Also list devices that a BitLocker policy leaves out on purpose." },
+      { "Name": "MP.RKS.IA.1002 MaximumBackupAgeDays", "Default": "60", "Text": "A LAPS backup older than this is stale." },
+      { "Name": "MP.RKS.IA.1002 IncludeExcludedDevices", "Default": "false", "Text": "Also list devices that a LAPS policy leaves out on purpose." },
+      { "Name": "MP.RKS.IA.1004 InactiveDays", "Default": "90", "Text": "A device that has not synced for longer is inactive." }
+    ]
+  },
+  "AppOnly": {
+    "Supported": true,
+    "Methods": { "Certificate": true, "ClientSecret": true, "ManagedIdentity": true, "WorkloadIdentity": true },
+    "Text": "Give the app the application permissions listed below, connect with Connect-MgGraph, and run Invoke-Maester -Pack RKS.IA -SkipBuiltIn -SkipGraphConnect -NonInteractive (-SkipGraphConnect skips Maester's check for its own Graph permissions, which an app made for this pack alone does not hold)."
+  },
+  "Support": {
+    "Pack": "https://github.com/royklo/maester-pack-rksolutions/issues",
+    "Tests": "https://github.com/royklo/RKSolutions-Module/issues"
+  }
+}
